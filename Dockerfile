@@ -1,6 +1,7 @@
 FROM mongodb/mongodb-atlas-local
 
 ARG CODE_RELEASE
+ARG ARCH=amd64
 
 LABEL maintainer="mmarcon"
 
@@ -15,7 +16,7 @@ RUN useradd -ms /bin/bash code && \
 
 RUN mkdir -p /code-server && \
   CODE_RELEASE=${CODE_RELEASE:-$(curl -s https://api.github.com/repos/coder/code-server/releases/latest | grep -Po '"tag_name":\s*"\K[^"]+')} && \
-  curl -L "https://github.com/coder/code-server/releases/download/${CODE_RELEASE}/code-server-${CODE_RELEASE#v}-linux-amd64.tar.gz" -o /tmp/code-server.tar.gz && \
+  curl -L "https://github.com/coder/code-server/releases/download/${CODE_RELEASE}/code-server-${CODE_RELEASE#v}-linux-${ARCH}.tar.gz" -o /tmp/code-server.tar.gz && \
   tar -xzf /tmp/code-server.tar.gz -C /code-server --strip-components=1
 
 USER code
